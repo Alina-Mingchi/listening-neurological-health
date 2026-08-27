@@ -87,7 +87,7 @@ export function makeSpectrogram({
     for (let y = 0; y < freqBins; y++) {
       let v = noiseFloor * (0.5 + rnd() * 0.7) * (1 - y / (freqBins * 1.6));
       for (let f = 0; f < formants.length; f++) {
-        const centre = formants[f] + Math.sin(t * 3 + f) * 1.5;
+        const centre = (formants[f] ?? 0) + Math.sin(t * 3 + f) * 1.5;
         const d = (y - centre) / 2.2;
         v += env * Math.exp(-d * d) * (0.95 - f * 0.16);
       }

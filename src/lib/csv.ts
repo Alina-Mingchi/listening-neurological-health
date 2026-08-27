@@ -1,7 +1,7 @@
 /** Minimal CSV parser supporting quoted fields (no embedded newlines). */
 export function parseCsv(text: string): Record<string, string>[] {
   const lines = text.trim().split(/\r?\n/);
-  const header = splitLine(lines[0]);
+  const header = splitLine(lines[0] ?? "");
   return lines.slice(1).map((line) => {
     const cells = splitLine(line);
     const row: Record<string, string> = {};
