@@ -10,33 +10,123 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AnalyseRouteImport } from './routes/analyse'
+import { Route as ProcessRouteImport } from './routes/process'
+import { Route as AnalyseListenRouteImport } from './routes/analyse.listen'
+import { Route as AnalyseMeasureRouteImport } from './routes/analyse.measure'
+import { Route as AnalysePredictRouteImport } from './routes/analyse.predict'
+import { Route as AnalyseWhyRouteImport } from './routes/analyse.why'
+import { Route as ProcessRecordRouteImport } from './routes/process.record'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AnalyseRoute = AnalyseRouteImport.update({
+  id: '/analyse',
+  path: '/analyse',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProcessRoute = ProcessRouteImport.update({
+  id: '/process',
+  path: '/process',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AnalyseListenRoute = AnalyseListenRouteImport.update({
+  id: '/listen',
+  path: '/listen',
+  getParentRoute: () => AnalyseRoute,
+} as any)
+const AnalyseMeasureRoute = AnalyseMeasureRouteImport.update({
+  id: '/measure',
+  path: '/measure',
+  getParentRoute: () => AnalyseRoute,
+} as any)
+const AnalysePredictRoute = AnalysePredictRouteImport.update({
+  id: '/predict',
+  path: '/predict',
+  getParentRoute: () => AnalyseRoute,
+} as any)
+const AnalyseWhyRoute = AnalyseWhyRouteImport.update({
+  id: '/why',
+  path: '/why',
+  getParentRoute: () => AnalyseRoute,
+} as any)
+const ProcessRecordRoute = ProcessRecordRouteImport.update({
+  id: '/record',
+  path: '/record',
+  getParentRoute: () => ProcessRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/analyse': typeof AnalyseRouteWithChildren
+  '/process': typeof ProcessRouteWithChildren
+  '/analyse/listen': typeof AnalyseListenRoute
+  '/analyse/measure': typeof AnalyseMeasureRoute
+  '/analyse/predict': typeof AnalysePredictRoute
+  '/analyse/why': typeof AnalyseWhyRoute
+  '/process/record': typeof ProcessRecordRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/analyse': typeof AnalyseRouteWithChildren
+  '/process': typeof ProcessRouteWithChildren
+  '/analyse/listen': typeof AnalyseListenRoute
+  '/analyse/measure': typeof AnalyseMeasureRoute
+  '/analyse/predict': typeof AnalysePredictRoute
+  '/analyse/why': typeof AnalyseWhyRoute
+  '/process/record': typeof ProcessRecordRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/analyse': typeof AnalyseRouteWithChildren
+  '/process': typeof ProcessRouteWithChildren
+  '/analyse/listen': typeof AnalyseListenRoute
+  '/analyse/measure': typeof AnalyseMeasureRoute
+  '/analyse/predict': typeof AnalysePredictRoute
+  '/analyse/why': typeof AnalyseWhyRoute
+  '/process/record': typeof ProcessRecordRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/analyse'
+    | '/process'
+    | '/analyse/listen'
+    | '/analyse/measure'
+    | '/analyse/predict'
+    | '/analyse/why'
+    | '/process/record'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/analyse'
+    | '/process'
+    | '/analyse/listen'
+    | '/analyse/measure'
+    | '/analyse/predict'
+    | '/analyse/why'
+    | '/process/record'
+  id:
+    | '__root__'
+    | '/'
+    | '/analyse'
+    | '/process'
+    | '/analyse/listen'
+    | '/analyse/measure'
+    | '/analyse/predict'
+    | '/analyse/why'
+    | '/process/record'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AnalyseRoute: typeof AnalyseRouteWithChildren
+  ProcessRoute: typeof ProcessRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +138,90 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/analyse': {
+      id: '/analyse'
+      path: '/analyse'
+      fullPath: '/analyse'
+      preLoaderRoute: typeof AnalyseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/process': {
+      id: '/process'
+      path: '/process'
+      fullPath: '/process'
+      preLoaderRoute: typeof ProcessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/analyse/listen': {
+      id: '/analyse/listen'
+      path: '/listen'
+      fullPath: '/analyse/listen'
+      preLoaderRoute: typeof AnalyseListenRouteImport
+      parentRoute: typeof AnalyseRoute
+    }
+    '/analyse/measure': {
+      id: '/analyse/measure'
+      path: '/measure'
+      fullPath: '/analyse/measure'
+      preLoaderRoute: typeof AnalyseMeasureRouteImport
+      parentRoute: typeof AnalyseRoute
+    }
+    '/analyse/predict': {
+      id: '/analyse/predict'
+      path: '/predict'
+      fullPath: '/analyse/predict'
+      preLoaderRoute: typeof AnalysePredictRouteImport
+      parentRoute: typeof AnalyseRoute
+    }
+    '/analyse/why': {
+      id: '/analyse/why'
+      path: '/why'
+      fullPath: '/analyse/why'
+      preLoaderRoute: typeof AnalyseWhyRouteImport
+      parentRoute: typeof AnalyseRoute
+    }
+    '/process/record': {
+      id: '/process/record'
+      path: '/record'
+      fullPath: '/process/record'
+      preLoaderRoute: typeof ProcessRecordRouteImport
+      parentRoute: typeof ProcessRoute
+    }
   }
 }
 
+interface AnalyseRouteChildren {
+  AnalyseListenRoute: typeof AnalyseListenRoute
+  AnalyseMeasureRoute: typeof AnalyseMeasureRoute
+  AnalysePredictRoute: typeof AnalysePredictRoute
+  AnalyseWhyRoute: typeof AnalyseWhyRoute
+}
+
+const AnalyseRouteChildren: AnalyseRouteChildren = {
+  AnalyseListenRoute: AnalyseListenRoute,
+  AnalyseMeasureRoute: AnalyseMeasureRoute,
+  AnalysePredictRoute: AnalysePredictRoute,
+  AnalyseWhyRoute: AnalyseWhyRoute,
+}
+
+const AnalyseRouteWithChildren =
+  AnalyseRoute._addFileChildren(AnalyseRouteChildren)
+
+interface ProcessRouteChildren {
+  ProcessRecordRoute: typeof ProcessRecordRoute
+}
+
+const ProcessRouteChildren: ProcessRouteChildren = {
+  ProcessRecordRoute: ProcessRecordRoute,
+}
+
+const ProcessRouteWithChildren =
+  ProcessRoute._addFileChildren(ProcessRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AnalyseRoute: AnalyseRouteWithChildren,
+  ProcessRoute: ProcessRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
