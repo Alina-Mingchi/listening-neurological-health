@@ -10,7 +10,9 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AnalyseRouteImport } from './routes/analyse'
 import { Route as ProcessRouteImport } from './routes/process'
+import { Route as AnalyseListenRouteImport } from './routes/analyse.listen'
 import { Route as ProcessRecordRouteImport } from './routes/process.record'
 
 const IndexRoute = IndexRouteImport.update({
@@ -18,10 +20,20 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AnalyseRoute = AnalyseRouteImport.update({
+  id: '/analyse',
+  path: '/analyse',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProcessRoute = ProcessRouteImport.update({
   id: '/process',
   path: '/process',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AnalyseListenRoute = AnalyseListenRouteImport.update({
+  id: '/listen',
+  path: '/listen',
+  getParentRoute: () => AnalyseRoute,
 } as any)
 const ProcessRecordRoute = ProcessRecordRouteImport.update({
   id: '/record',
@@ -31,30 +43,44 @@ const ProcessRecordRoute = ProcessRecordRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/analyse': typeof AnalyseRouteWithChildren
   '/process': typeof ProcessRouteWithChildren
+  '/analyse/listen': typeof AnalyseListenRoute
   '/process/record': typeof ProcessRecordRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/analyse': typeof AnalyseRouteWithChildren
   '/process': typeof ProcessRouteWithChildren
+  '/analyse/listen': typeof AnalyseListenRoute
   '/process/record': typeof ProcessRecordRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/analyse': typeof AnalyseRouteWithChildren
   '/process': typeof ProcessRouteWithChildren
+  '/analyse/listen': typeof AnalyseListenRoute
   '/process/record': typeof ProcessRecordRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/process' | '/process/record'
+  fullPaths:
+    '/' | '/analyse' | '/process' | '/analyse/listen' | '/process/record'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/process' | '/process/record'
-  id: '__root__' | '/' | '/process' | '/process/record'
+  to: '/' | '/analyse' | '/process' | '/analyse/listen' | '/process/record'
+  id:
+    | '__root__'
+    | '/'
+    | '/analyse'
+    | '/process'
+    | '/analyse/listen'
+    | '/process/record'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AnalyseRoute: typeof AnalyseRouteWithChildren
   ProcessRoute: typeof ProcessRouteWithChildren
 }
 
@@ -67,12 +93,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/analyse': {
+      id: '/analyse'
+      path: '/analyse'
+      fullPath: '/analyse'
+      preLoaderRoute: typeof AnalyseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/process': {
       id: '/process'
       path: '/process'
       fullPath: '/process'
       preLoaderRoute: typeof ProcessRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/analyse/listen': {
+      id: '/analyse/listen'
+      path: '/listen'
+      fullPath: '/analyse/listen'
+      preLoaderRoute: typeof AnalyseListenRouteImport
+      parentRoute: typeof AnalyseRoute
     }
     '/process/record': {
       id: '/process/record'
@@ -83,6 +123,17 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface AnalyseRouteChildren {
+  AnalyseListenRoute: typeof AnalyseListenRoute
+}
+
+const AnalyseRouteChildren: AnalyseRouteChildren = {
+  AnalyseListenRoute: AnalyseListenRoute,
+}
+
+const AnalyseRouteWithChildren =
+  AnalyseRoute._addFileChildren(AnalyseRouteChildren)
 
 interface ProcessRouteChildren {
   ProcessRecordRoute: typeof ProcessRecordRoute
@@ -97,6 +148,7 @@ const ProcessRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AnalyseRoute: AnalyseRouteWithChildren,
   ProcessRoute: ProcessRouteWithChildren,
 }
 export const routeTree = rootRouteImport
