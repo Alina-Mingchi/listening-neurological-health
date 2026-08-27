@@ -1,0 +1,13 @@
+feature,value,unit,shap,definition
+Mean pitch (F0),112.4,Hz,0.18,"Average fundamental frequency of vocal fold vibration. Lower or unusually stable pitch can accompany reduced laryngeal control."
+Pitch variation (F0 SD),8.1,Hz,0.31,"Standard deviation of the fundamental frequency across the utterance. Reduced variation is associated with monotone speech (hypophonia/monopitch)."
+Loudness (RMS intensity),58.3,dB,0.12,"Average acoustic intensity of the voiced segments. Reduced loudness is a common early marker of hypokinetic dysarthria."
+F1,472,Hz,0.06,"First formant frequency, largely reflecting tongue height and jaw opening during vowels."
+F2,1418,Hz,0.22,"Second formant frequency, reflecting tongue advancement. Compressed F2 range indicates reduced articulatory movement."
+F3,2530,Hz,0.04,"Third formant frequency, related to lip rounding and finer vocal tract shaping."
+Speech rate,3.9,syll/s,0.15,"Number of syllables produced per second including pauses. Both slowed and accelerated rates are clinically relevant."
+Articulation rate,4.6,syll/s,0.09,"Syllables per second excluding pauses; isolates articulatory speed from pausing behaviour."
+Jitter (local),1.42,%,0.27,"Cycle-to-cycle variability of the fundamental period. Elevated jitter indicates unstable vocal fold vibration."
+Shimmer (local),9.85,%,0.19,"Cycle-to-cycle variability of amplitude. Elevated shimmer relates to breathy or rough voice quality."
+HNR,11.2,dB,-0.14,"Harmonics-to-noise ratio: energy in harmonics versus aperiodic noise. Lower values indicate a noisier voice."
+Pause ratio,0.28,-,0.11,"Proportion of the recording occupied by silent pauses; higher values can reflect slowed speech planning."

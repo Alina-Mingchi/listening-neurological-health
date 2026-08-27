@@ -1,0 +1,5 @@
+environment,label,snr_gain_db,input_snr_db,file
+BUS,Bus interior,7.2,2.5,bus_sample_01.wav
+CAF,Cafeteria,5.8,1.9,caf_sample_01.wav
+STR,Street,9.4,0.8,str_sample_01.wav
+PED,Pedestrian area,6.5,3.1,ped_sample_01.wav
