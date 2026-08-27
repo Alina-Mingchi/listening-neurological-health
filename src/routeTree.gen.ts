@@ -13,6 +13,9 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AnalyseRouteImport } from './routes/analyse'
 import { Route as ProcessRouteImport } from './routes/process'
 import { Route as AnalyseListenRouteImport } from './routes/analyse.listen'
+import { Route as AnalyseMeasureRouteImport } from './routes/analyse.measure'
+import { Route as AnalysePredictRouteImport } from './routes/analyse.predict'
+import { Route as AnalyseWhyRouteImport } from './routes/analyse.why'
 import { Route as ProcessRecordRouteImport } from './routes/process.record'
 
 const IndexRoute = IndexRouteImport.update({
@@ -35,6 +38,21 @@ const AnalyseListenRoute = AnalyseListenRouteImport.update({
   path: '/listen',
   getParentRoute: () => AnalyseRoute,
 } as any)
+const AnalyseMeasureRoute = AnalyseMeasureRouteImport.update({
+  id: '/measure',
+  path: '/measure',
+  getParentRoute: () => AnalyseRoute,
+} as any)
+const AnalysePredictRoute = AnalysePredictRouteImport.update({
+  id: '/predict',
+  path: '/predict',
+  getParentRoute: () => AnalyseRoute,
+} as any)
+const AnalyseWhyRoute = AnalyseWhyRouteImport.update({
+  id: '/why',
+  path: '/why',
+  getParentRoute: () => AnalyseRoute,
+} as any)
 const ProcessRecordRoute = ProcessRecordRouteImport.update({
   id: '/record',
   path: '/record',
@@ -46,6 +64,9 @@ export interface FileRoutesByFullPath {
   '/analyse': typeof AnalyseRouteWithChildren
   '/process': typeof ProcessRouteWithChildren
   '/analyse/listen': typeof AnalyseListenRoute
+  '/analyse/measure': typeof AnalyseMeasureRoute
+  '/analyse/predict': typeof AnalysePredictRoute
+  '/analyse/why': typeof AnalyseWhyRoute
   '/process/record': typeof ProcessRecordRoute
 }
 export interface FileRoutesByTo {
@@ -53,6 +74,9 @@ export interface FileRoutesByTo {
   '/analyse': typeof AnalyseRouteWithChildren
   '/process': typeof ProcessRouteWithChildren
   '/analyse/listen': typeof AnalyseListenRoute
+  '/analyse/measure': typeof AnalyseMeasureRoute
+  '/analyse/predict': typeof AnalysePredictRoute
+  '/analyse/why': typeof AnalyseWhyRoute
   '/process/record': typeof ProcessRecordRoute
 }
 export interface FileRoutesById {
@@ -61,20 +85,41 @@ export interface FileRoutesById {
   '/analyse': typeof AnalyseRouteWithChildren
   '/process': typeof ProcessRouteWithChildren
   '/analyse/listen': typeof AnalyseListenRoute
+  '/analyse/measure': typeof AnalyseMeasureRoute
+  '/analyse/predict': typeof AnalysePredictRoute
+  '/analyse/why': typeof AnalyseWhyRoute
   '/process/record': typeof ProcessRecordRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/analyse' | '/process' | '/analyse/listen' | '/process/record'
+    | '/'
+    | '/analyse'
+    | '/process'
+    | '/analyse/listen'
+    | '/analyse/measure'
+    | '/analyse/predict'
+    | '/analyse/why'
+    | '/process/record'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/analyse' | '/process' | '/analyse/listen' | '/process/record'
+  to:
+    | '/'
+    | '/analyse'
+    | '/process'
+    | '/analyse/listen'
+    | '/analyse/measure'
+    | '/analyse/predict'
+    | '/analyse/why'
+    | '/process/record'
   id:
     | '__root__'
     | '/'
     | '/analyse'
     | '/process'
     | '/analyse/listen'
+    | '/analyse/measure'
+    | '/analyse/predict'
+    | '/analyse/why'
     | '/process/record'
   fileRoutesById: FileRoutesById
 }
@@ -114,6 +159,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AnalyseListenRouteImport
       parentRoute: typeof AnalyseRoute
     }
+    '/analyse/measure': {
+      id: '/analyse/measure'
+      path: '/measure'
+      fullPath: '/analyse/measure'
+      preLoaderRoute: typeof AnalyseMeasureRouteImport
+      parentRoute: typeof AnalyseRoute
+    }
+    '/analyse/predict': {
+      id: '/analyse/predict'
+      path: '/predict'
+      fullPath: '/analyse/predict'
+      preLoaderRoute: typeof AnalysePredictRouteImport
+      parentRoute: typeof AnalyseRoute
+    }
+    '/analyse/why': {
+      id: '/analyse/why'
+      path: '/why'
+      fullPath: '/analyse/why'
+      preLoaderRoute: typeof AnalyseWhyRouteImport
+      parentRoute: typeof AnalyseRoute
+    }
     '/process/record': {
       id: '/process/record'
       path: '/record'
@@ -126,10 +192,16 @@ declare module '@tanstack/react-router' {
 
 interface AnalyseRouteChildren {
   AnalyseListenRoute: typeof AnalyseListenRoute
+  AnalyseMeasureRoute: typeof AnalyseMeasureRoute
+  AnalysePredictRoute: typeof AnalysePredictRoute
+  AnalyseWhyRoute: typeof AnalyseWhyRoute
 }
 
 const AnalyseRouteChildren: AnalyseRouteChildren = {
   AnalyseListenRoute: AnalyseListenRoute,
+  AnalyseMeasureRoute: AnalyseMeasureRoute,
+  AnalysePredictRoute: AnalysePredictRoute,
+  AnalyseWhyRoute: AnalyseWhyRoute,
 }
 
 const AnalyseRouteWithChildren =
