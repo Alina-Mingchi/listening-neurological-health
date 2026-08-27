@@ -38,7 +38,7 @@ function ProcessPage() {
     queryFn: async () => parseCsv(await (await fetch("/data/noise_reduction.csv")).text()),
   });
 
-  const row = rows?.find((r) => r.environment === env);
+  const row = rows?.find((r) => r['environment'] === env);
 
   return (
     <PageShell
@@ -70,7 +70,7 @@ function ProcessPage() {
       ) : (
         <div className="mt-8 space-y-6">
           <p className="rule-heading">
-            {row?.label ?? env} · {row?.file ?? "sample.wav"}
+            {row?.['label'] ?? env} · {row?.['file'] ?? "sample.wav"}
           </p>
 
           <div className="grid gap-6">
@@ -79,14 +79,14 @@ function ProcessPage() {
               seed={env}
               variant="noisy"
               label="Noisy"
-              caption={`Recording mixed with ${row?.label ?? env} noise${row?.input_snr_db ? ` · input SNR ${row.input_snr_db} dB` : ""}`}
+              caption={`Recording mixed with ${row?.['label'] ?? env} noise${row?.['input_snr_db'] ? ` · input SNR ${row['input_snr_db']} dB` : ""}`}
             />
             <SignalPanel seed={env} variant="enhanced" label="Enhanced" caption="After the noise-reduction front-end" />
           </div>
 
           <Notice>
             Noise reduction:{" "}
-            <span className="font-mono text-lg text-primary">+{row?.snr_gain_db ?? "—"} dB</span>{" "}
+            <span className="font-mono text-lg text-primary">+{row?.['snr_gain_db'] ?? "—"} dB</span>{" "}
             SNR improvement for this recording.
           </Notice>
 

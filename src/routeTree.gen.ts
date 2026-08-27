@@ -10,33 +10,52 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ProcessRouteImport } from './routes/process'
+import { Route as ProcessRecordRouteImport } from './routes/process.record'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProcessRoute = ProcessRouteImport.update({
+  id: '/process',
+  path: '/process',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProcessRecordRoute = ProcessRecordRouteImport.update({
+  id: '/record',
+  path: '/record',
+  getParentRoute: () => ProcessRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/process': typeof ProcessRouteWithChildren
+  '/process/record': typeof ProcessRecordRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/process': typeof ProcessRouteWithChildren
+  '/process/record': typeof ProcessRecordRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/process': typeof ProcessRouteWithChildren
+  '/process/record': typeof ProcessRecordRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/process' | '/process/record'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/process' | '/process/record'
+  id: '__root__' | '/' | '/process' | '/process/record'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ProcessRoute: typeof ProcessRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +67,37 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/process': {
+      id: '/process'
+      path: '/process'
+      fullPath: '/process'
+      preLoaderRoute: typeof ProcessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/process/record': {
+      id: '/process/record'
+      path: '/record'
+      fullPath: '/process/record'
+      preLoaderRoute: typeof ProcessRecordRouteImport
+      parentRoute: typeof ProcessRoute
+    }
   }
 }
 
+interface ProcessRouteChildren {
+  ProcessRecordRoute: typeof ProcessRecordRoute
+}
+
+const ProcessRouteChildren: ProcessRouteChildren = {
+  ProcessRecordRoute: ProcessRecordRoute,
+}
+
+const ProcessRouteWithChildren =
+  ProcessRoute._addFileChildren(ProcessRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ProcessRoute: ProcessRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
