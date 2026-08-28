@@ -29,24 +29,24 @@ const AnalyseIndexRoute = AnalyseIndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const AnalyseListenRoute = AnalyseListenRouteImport.update({
-  id: '/analyse/listen',
-  path: '/analyse/listen',
-  getParentRoute: () => rootRouteImport,
+  id: '/listen',
+  path: '/listen',
+  getParentRoute: () => AnalyseRoute,
 } as any)
 const AnalyseMeasureRoute = AnalyseMeasureRouteImport.update({
-  id: '/analyse/measure',
-  path: '/analyse/measure',
-  getParentRoute: () => rootRouteImport,
+  id: '/measure',
+  path: '/measure',
+  getParentRoute: () => AnalyseRoute,
 } as any)
 const AnalysePredictRoute = AnalysePredictRouteImport.update({
-  id: '/analyse/predict',
-  path: '/analyse/predict',
-  getParentRoute: () => rootRouteImport,
+  id: '/predict',
+  path: '/predict',
+  getParentRoute: () => AnalyseRoute,
 } as any)
 const AnalyseWhyRoute = AnalyseWhyRouteImport.update({
-  id: '/analyse/why',
-  path: '/analyse/why',
-  getParentRoute: () => rootRouteImport,
+  id: '/why',
+  path: '/why',
+  getParentRoute: () => AnalyseRoute,
 } as any)
 const ProcessIndexRoute = ProcessIndexRouteImport.update({
   id: '/process/',
@@ -125,10 +125,6 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AnalyseListenRoute: typeof AnalyseListenRoute
-  AnalyseMeasureRoute: typeof AnalyseMeasureRoute
-  AnalysePredictRoute: typeof AnalysePredictRoute
-  AnalyseWhyRoute: typeof AnalyseWhyRoute
   ProcessRecordRoute: typeof ProcessRecordRoute
   AnalyseIndexRoute: typeof AnalyseIndexRoute
   ProcessIndexRoute: typeof ProcessIndexRoute
@@ -152,31 +148,31 @@ declare module '@tanstack/react-router' {
     }
     '/analyse/listen': {
       id: '/analyse/listen'
-      path: '/analyse/listen'
+      path: '/listen'
       fullPath: '/analyse/listen'
       preLoaderRoute: typeof AnalyseListenRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AnalyseRoute
     }
     '/analyse/measure': {
       id: '/analyse/measure'
-      path: '/analyse/measure'
+      path: '/measure'
       fullPath: '/analyse/measure'
       preLoaderRoute: typeof AnalyseMeasureRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AnalyseRoute
     }
     '/analyse/predict': {
       id: '/analyse/predict'
-      path: '/analyse/predict'
+      path: '/predict'
       fullPath: '/analyse/predict'
       preLoaderRoute: typeof AnalysePredictRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AnalyseRoute
     }
     '/analyse/why': {
       id: '/analyse/why'
-      path: '/analyse/why'
+      path: '/why'
       fullPath: '/analyse/why'
       preLoaderRoute: typeof AnalyseWhyRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AnalyseRoute
     }
     '/process/': {
       id: '/process/'
@@ -197,10 +193,6 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AnalyseListenRoute: AnalyseListenRoute,
-  AnalyseMeasureRoute: AnalyseMeasureRoute,
-  AnalysePredictRoute: AnalysePredictRoute,
-  AnalyseWhyRoute: AnalyseWhyRoute,
   ProcessRecordRoute: ProcessRecordRoute,
   AnalyseIndexRoute: AnalyseIndexRoute,
   ProcessIndexRoute: ProcessIndexRoute,
