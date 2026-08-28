@@ -7,7 +7,7 @@ import { SignalPanel } from "@/components/SignalPanel";
 import { ArrowRight, RotateCcw } from "@/components/icons";
 import { parseCsv } from "@/lib/csv";
 
-export const Route = createFileRoute("/process")({
+export const Route = createFileRoute("/process/")({
   head: () => ({
     meta: [
       { title: "Process Speech — Noise Reduction Demo" },

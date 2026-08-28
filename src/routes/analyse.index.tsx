@@ -4,7 +4,7 @@ import { PageShell, Notice } from "@/components/PageShell";
 import { Pipeline } from "@/components/Pipeline";
 import { ArrowRight } from "@/components/icons";
 
-export const Route = createFileRoute("/analyse")({
+export const Route = createFileRoute("/analyse/")({
   head: () => ({
     meta: [
       { title: "Analyse Speech — Neurological Health Research Demo" },

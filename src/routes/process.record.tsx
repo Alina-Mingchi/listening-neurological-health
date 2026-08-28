@@ -28,7 +28,7 @@ export const Route = createFileRoute("/process/record")({
 
 type Status = "idle" | "recording" | "recorded" | "queued" | "processing" | "ready";
 
-export function RecordPage() {
+function RecordPage() {
   const [status, setStatus] = useState<Status>("idle");
   const [seconds, setSeconds] = useState(0);
   const [jobLog, setJobLog] = useState<string[]>([]);
