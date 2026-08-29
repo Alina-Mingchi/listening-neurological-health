@@ -3,13 +3,14 @@ import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { PageShell } from "@/components/PageShell";
 import { SignalPanel } from "@/components/SignalPanel";
+import { BiInline } from "@/components/Bilingual";
 import { ArrowRight } from "@/components/icons";
 import { parseCsv } from "@/lib/csv";
 
 export const Route = createFileRoute("/analyse/measure")({
   head: () => ({
     meta: [
-      { title: "Analyse — What Does the Computer Measure?" },
+      { title: "Analyse · Analyser — What Does the Computer Measure?" },
       {
         name: "description",
         content:
@@ -35,38 +36,63 @@ function MeasurePage() {
 
   return (
     <PageShell
-      eyebrow="Step 2 of 4"
+      eyebrow={<BiInline en="Step 2 of 4" fr="Étape 2 sur 4" />}
       title="Analyse"
+      titleFr="Analyser"
       intro="What does the computer measure?"
+      introFr="Que mesure l'ordinateur ?"
       steps={[
-        { label: "Intro", active: false },
-        { label: "Listen", active: false },
-        { label: "Analyse", active: true },
-        { label: "Predict", active: false },
-        { label: "Why", active: false },
+        { label: "Intro", labelFr: "Intro", active: false },
+        { label: "Listen", labelFr: "Écouter", active: false },
+        { label: "Analyse", labelFr: "Analyser", active: true },
+        { label: "Predict", labelFr: "Prédire", active: false },
+        { label: "Why", labelFr: "Pourquoi", active: false },
       ]}
     >
       <div className="grid gap-6 lg:grid-cols-2">
-        <SignalPanel seed="speakerB" variant="clean" label="Speaker B" caption="Sustained sentence reading task" />
+        <SignalPanel
+          seed="speakerB"
+          variant="clean"
+          label="Speaker B"
+          labelFr="Locuteur B"
+          caption="Sustained sentence reading task"
+          captionFr="Tâche de lecture de phrase soutenue"
+        />
 
         <div className="paper overflow-hidden">
           <div className="border-b border-border px-4 py-2.5">
             <span className="font-display text-base font-semibold text-ink">Speech features</span>
+            <span lang="fr" className="block font-display text-base italic text-ink-soft">
+              Paramètres de la parole
+            </span>
           </div>
           <table className="w-full text-sm">
             <thead>
               <tr className="rule-heading border-b border-border text-left">
-                <th className="px-4 py-2 font-normal">Feature</th>
-                <th className="px-4 py-2 text-right font-normal">Value</th>
-                <th className="px-4 py-2 font-normal">Unit</th>
+                <th className="px-4 py-2 font-normal">
+                  Feature / <span lang="fr" className="italic">Paramètre</span>
+                </th>
+                <th className="px-4 py-2 text-right font-normal">
+                  Value / <span lang="fr" className="italic">Valeur</span>
+                </th>
+                <th className="px-4 py-2 font-normal">
+                  Unit / <span lang="fr" className="italic">Unité</span>
+                </th>
               </tr>
             </thead>
             <tbody>
               {(rows ?? []).map((r) => (
                 <tr key={r["feature"]} className="border-b border-border/60 last:border-0">
-                  <td className="px-4 py-2 text-ink-soft">{r["feature"]}</td>
-                  <td className="px-4 py-2 text-right font-mono">{r["value"]}</td>
-                  <td className="px-4 py-2 font-mono text-xs text-muted-foreground">{r["unit"]}</td>
+                  <td className="px-4 py-2 text-ink-soft">
+                    {r["feature"]}
+                    {r["feature_fr"] && r["feature_fr"] !== r["feature"] ? (
+                      <span lang="fr" className="block text-xs italic text-muted-foreground">
+                        {r["feature_fr"]}
+                      </span>
+                    ) : null}
+                  </td>
+                  <td className="px-4 py-2 text-right font-mono align-top">{r["value"]}</td>
+                  <td className="px-4 py-2 font-mono text-xs align-top text-muted-foreground">{r["unit"]}</td>
                 </tr>
               ))}
             </tbody>
@@ -77,7 +103,7 @@ function MeasurePage() {
       <div className="mt-8 border-t border-border pt-6">
         <Button asChild>
           <Link to="/analyse/predict">
-            Next
+            <BiInline en="Next" fr="Suivant" />
             <ArrowRight className="size-4" />
           </Link>
         </Button>

@@ -10,12 +10,13 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { PageShell, Notice } from "@/components/PageShell";
+import { BiInline } from "@/components/Bilingual";
 import { parseCsv } from "@/lib/csv";
 
 export const Route = createFileRoute("/analyse/why")({
   head: () => ({
     meta: [
-      { title: "Why — Feature Contributions Behind the Prediction" },
+      { title: "Why · Pourquoi — Feature Contributions Behind the Prediction" },
       {
         name: "description",
         content:
@@ -48,19 +49,24 @@ function WhyPage() {
 
   return (
     <PageShell
-      eyebrow="Step 4 of 4"
+      eyebrow={<BiInline en="Step 4 of 4" fr="Étape 4 sur 4" />}
       title="Why did the model predict this?"
+      titleFr="Pourquoi le modèle a-t-il fait cette prédiction ?"
       intro="Click a feature to learn more."
+      introFr="Cliquez sur un paramètre pour en savoir plus."
       steps={[
-        { label: "Intro", active: false },
-        { label: "Listen", active: false },
-        { label: "Analyse", active: false },
-        { label: "Predict", active: false },
-        { label: "Why", active: true },
+        { label: "Intro", labelFr: "Intro", active: false },
+        { label: "Listen", labelFr: "Écouter", active: false },
+        { label: "Analyse", labelFr: "Analyser", active: false },
+        { label: "Predict", labelFr: "Prédire", active: false },
+        { label: "Why", labelFr: "Pourquoi", active: true },
       ]}
     >
       <div className="paper p-6">
-        <p className="rule-heading mb-5">Feature contribution (SHAP values)</p>
+        <p className="rule-heading mb-5">
+          Feature contribution (SHAP values) ·{" "}
+          <span lang="fr" className="italic">Contribution des paramètres (valeurs SHAP)</span>
+        </p>
         <ul className="space-y-2">
           {sorted.map((r) => {
             const shap = Number(r["shap"]);
@@ -71,7 +77,14 @@ function WhyPage() {
                   onClick={() => setSelected(r)}
                   className="grid w-full grid-cols-[minmax(9rem,14rem)_1fr_4rem] items-center gap-3 rounded-md px-2 py-1.5 text-left transition-colors hover:bg-secondary"
                 >
-                  <span className="truncate text-sm text-ink-soft">{r["feature"]}</span>
+                  <span className="min-w-0">
+                    <span className="block truncate text-sm text-ink-soft">{r["feature"]}</span>
+                    {r["feature_fr"] && r["feature_fr"] !== r["feature"] ? (
+                      <span lang="fr" className="block truncate text-xs italic text-muted-foreground">
+                        {r["feature_fr"]}
+                      </span>
+                    ) : null}
+                  </span>
                   <span className="relative flex h-4 items-center">
                     <span className="absolute left-1/2 h-full w-px bg-border" />
                     <span
@@ -92,31 +105,51 @@ function WhyPage() {
           Bars to the right push the prediction towards <em>pathological</em>; bars to the left push towards{" "}
           <em>healthy</em>.
         </p>
+        <p lang="fr" className="text-xs italic text-muted-foreground/80">
+          Les barres vers la droite poussent la prédiction vers <em>pathologique</em> ; les barres vers la gauche la
+          poussent vers <em>sain</em>.
+        </p>
       </div>
 
       <div className="mt-8">
         <Notice tone="warn">
           Model prediction only for research development purpose, NOT a medical diagnosis.
+          <br />
+          <span lang="fr" className="italic">
+            Prédiction du modèle uniquement à des fins de recherche et de développement, PAS un diagnostic médical.
+          </span>
         </Notice>
       </div>
 
       <div className="mt-8 border-t border-border pt-6">
         <Button asChild size="lg">
-          <Link to="/">Finish</Link>
+          <Link to="/">
+            <BiInline en="Finish" fr="Terminer" />
+          </Link>
         </Button>
       </div>
 
       <Dialog open={!!selected} onOpenChange={(o) => !o && setSelected(null)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle className="font-display">{selected?.["feature"]}</DialogTitle>
+            <DialogTitle className="font-display">
+              {selected?.["feature"]}
+              {selected?.["feature_fr"] && selected["feature_fr"] !== selected["feature"] ? (
+                <span lang="fr" className="block text-base italic text-ink-soft">
+                  {selected["feature_fr"]}
+                </span>
+              ) : null}
+            </DialogTitle>
             <DialogDescription className="pt-2 text-left">
               {selected?.["definition"]}
+              <span lang="fr" className="mt-2 block italic">
+                {selected?.["definition_fr"]}
+              </span>
             </DialogDescription>
           </DialogHeader>
           <div className="flex gap-6 border-t border-border pt-4 font-mono text-sm">
             <span>
-              value: <strong>{selected?.["value"]}</strong> {selected?.["unit"]}
+              value / valeur: <strong>{selected?.["value"]}</strong> {selected?.["unit"]}
             </span>
             <span>
               SHAP: <strong>{selected?.["shap"]}</strong>
