@@ -1,13 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import { Play, Square } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { BiInline } from "@/components/Bilingual";
 import { makeSpectrogram, makeWaveform, playSignal, stopPlayback, type Variant } from "@/lib/audio";
 
 interface Props {
   seed: string;
   variant: Variant;
   label: string;
+  labelFr?: string;
   caption?: string;
+  captionFr?: string;
   compact?: boolean;
 }
 
@@ -34,7 +37,7 @@ function cssVar(name: string, fallback: string) {
   return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
 }
 
-export function SignalPanel({ seed, variant, label, caption, compact }: Props) {
+export function SignalPanel({ seed, variant, label, labelFr, caption, captionFr, compact }: Props) {
   const [playing, setPlaying] = useState(false);
 
   const waveRef = useCanvas(
@@ -97,11 +100,25 @@ export function SignalPanel({ seed, variant, label, caption, compact }: Props) {
       <figcaption className="flex items-center justify-between gap-3 border-b border-border px-4 py-2.5">
         <div>
           <span className="font-display text-base font-semibold text-ink">{label}</span>
+          {labelFr ? (
+            <span lang="fr" className="block font-display text-base italic text-ink-soft">
+              {labelFr}
+            </span>
+          ) : null}
           {caption ? <p className="text-xs text-muted-foreground">{caption}</p> : null}
+          {captionFr ? (
+            <p lang="fr" className="text-xs italic text-muted-foreground/80">
+              {captionFr}
+            </p>
+          ) : null}
         </div>
         <Button size="sm" variant={playing ? "secondary" : "outline"} onClick={toggle}>
           {playing ? <Square className="size-3.5" /> : <Play className="size-3.5" />}
-          {playing ? "Stop" : "Listen"}
+          {playing ? (
+            <BiInline en="Stop" fr="Arrêter" />
+          ) : (
+            <BiInline en="Listen" fr="Écouter" />
+          )}
         </Button>
       </figcaption>
       <div className="bg-card px-2 pt-2">
@@ -112,7 +129,9 @@ export function SignalPanel({ seed, variant, label, caption, compact }: Props) {
       </div>
       <div className="flex justify-between border-t border-border px-4 py-1.5 font-mono text-[0.65rem] text-muted-foreground">
         <span>0.0 s</span>
-        <span>waveform · spectrogram (0–8 kHz)</span>
+        <span>
+          waveform · spectrogram (0–8 kHz) / <span lang="fr">forme d'onde · spectrogramme</span>
+        </span>
         <span>2.4 s</span>
       </div>
     </figure>

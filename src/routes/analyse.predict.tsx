@@ -2,12 +2,13 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { PageShell, Notice } from "@/components/PageShell";
 import { Pipeline } from "@/components/Pipeline";
+import { BiInline } from "@/components/Bilingual";
 import { ArrowRight } from "@/components/icons";
 
 export const Route = createFileRoute("/analyse/predict")({
   head: () => ({
     meta: [
-      { title: "Predict — Model Output on Research Speech" },
+      { title: "Predict · Prédire — Model Output on Research Speech" },
       {
         name: "description",
         content:
@@ -26,32 +27,44 @@ export const Route = createFileRoute("/analyse/predict")({
 });
 
 const RESULT = [
-  { label: "Healthy", value: 27 },
-  { label: "Pathological", value: 73 },
+  { label: "Healthy", labelFr: "Sain", value: 27 },
+  { label: "Pathological", labelFr: "Pathologique", value: 73 },
 ];
 
 function PredictPage() {
   return (
     <PageShell
-      eyebrow="Step 3 of 4"
+      eyebrow={<BiInline en="Step 3 of 4" fr="Étape 3 sur 4" />}
       title="Predict"
+      titleFr="Prédire"
       steps={[
-        { label: "Intro", active: false },
-        { label: "Listen", active: false },
-        { label: "Analyse", active: false },
-        { label: "Predict", active: true },
-        { label: "Why", active: false },
+        { label: "Intro", labelFr: "Intro", active: false },
+        { label: "Listen", labelFr: "Écouter", active: false },
+        { label: "Analyse", labelFr: "Analyser", active: false },
+        { label: "Predict", labelFr: "Prédire", active: true },
+        { label: "Why", labelFr: "Pourquoi", active: false },
       ]}
     >
       <div className="paper p-6">
-        <p className="rule-heading mb-4">Pipeline</p>
-        <Pipeline steps={["Speech features", "ML Model", "Prediction"]} activeIndex={1} />
+        <p className="rule-heading mb-4">
+          Pipeline · <span lang="fr" className="italic">Pipeline</span>
+        </p>
+        <Pipeline
+          steps={[
+            { en: "Speech features", fr: "Paramètres de la parole" },
+            { en: "ML Model", fr: "Modèle d'apprentissage" },
+            { en: "Prediction", fr: "Prédiction" },
+          ]}
+          activeIndex={1}
+        />
 
         <div className="mt-8 space-y-4">
           {RESULT.map((r) => (
             <div key={r.label}>
               <div className="flex items-baseline justify-between">
-                <span className="font-display text-lg text-ink">{r.label}</span>
+                <span className="font-display text-lg text-ink">
+                  {r.label} · <span lang="fr" className="italic text-ink-soft">{r.labelFr}</span>
+                </span>
                 <span className="font-mono text-lg text-primary">{r.value}%</span>
               </div>
               <div className="mt-1 h-3 w-full overflow-hidden rounded-full bg-secondary">
@@ -68,13 +81,17 @@ function PredictPage() {
       <div className="mt-8">
         <Notice tone="warn">
           Model prediction only for research development purpose, NOT a medical diagnosis.
+          <br />
+          <span lang="fr" className="italic">
+            Prédiction du modèle uniquement à des fins de recherche et de développement, PAS un diagnostic médical.
+          </span>
         </Notice>
       </div>
 
       <div className="mt-8 border-t border-border pt-6">
         <Button asChild size="lg">
           <Link to="/analyse/why">
-            Why this prediction?
+            <BiInline en="Why this prediction?" fr="Pourquoi cette prédiction ?" />
             <ArrowRight className="size-4" />
           </Link>
         </Button>
