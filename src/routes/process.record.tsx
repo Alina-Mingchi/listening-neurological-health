@@ -4,11 +4,12 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { PageShell, Notice } from "@/components/PageShell";
 import { Mic, Play, Square, Trash2 } from "@/components/icons";
+import { BiInline } from "@/components/Bilingual";
 
 export const Route = createFileRoute("/process/record")({
   head: () => ({
     meta: [
-      { title: "Try Noise Reduction With Your Own Voice" },
+      { title: "Try Noise Reduction With Your Own Voice · Essayez avec votre propre voix" },
       {
         name: "description",
         content:
@@ -65,8 +66,9 @@ function RecordPage() {
       setStatus("recording");
       timer.current = setInterval(() => setSeconds((s) => s + 1), 1000);
     } catch {
-      toast.error("Microphone access was blocked", {
-        description: "Allow microphone permission in your browser to record a sample.",
+      toast.error("Microphone access was blocked · Acces au microphone bloque", {
+        description:
+          "Allow microphone permission in your browser to record a sample. · Autorisez l’acces au microphone dans votre navigateur pour enregistrer un echantillon.",
       });
     }
   };
@@ -118,22 +120,29 @@ function RecordPage() {
     setSeconds(0);
     setJobLog([]);
     setStatus("idle");
-    toast.success("Recording has been deleted");
+    toast.success("Recording has been deleted · L’enregistrement a ete supprime");
   };
 
   return (
     <PageShell
-      eyebrow="Demonstration 01 · Optional"
+      eyebrow={<BiInline en="Demonstration 01 · Optional" fr="Démonstration 01 · Facultatif" />}
       title="Want to try it with your own voice?"
+      titleFr="Envie d’essayer avec votre propre voix ?"
       steps={[
-        { label: "Enhance", active: false },
-        { label: "Your voice", active: true },
+        { label: "Enhance", labelFr: "Rehausser", active: false },
+        { label: "Your voice", labelFr: "Votre voix", active: true },
       ]}
     >
       <Notice tone="warn">
         Your recording will only be used to demonstrate noise reduction. Your voice will
         <strong> NOT </strong>
         be analysed for neurological conditions.
+        <br />
+        <span lang="fr" className="italic">
+          Votre enregistrement servira uniquement à démontrer la réduction du bruit. Votre voix ne sera
+          <strong> PAS </strong>
+          analysée pour des troubles neurologiques.
+        </span>
       </Notice>
 
       <div className="paper mt-8 p-8">
@@ -141,16 +150,24 @@ function RecordPage() {
           {status === "recording" ? (
             <Button size="lg" variant="destructive" onClick={stopRecording}>
               <Square className="size-4" />
-              Stop recording
+              <BiInline en="Stop recording" fr="Arrêter l’enregistrement" />
             </Button>
           ) : (
             <Button size="lg" onClick={startRecording}>
               <Mic className="size-4" />
-              {status === "idle" ? "Record" : "Record again"}
+              {status === "idle" ? (
+                <BiInline en="Record" fr="Enregistrer" />
+              ) : (
+                <BiInline en="Record again" fr="Enregistrer à nouveau" />
+              )}
             </Button>
           )}
           <span className="font-mono text-sm text-muted-foreground">
-            {status === "recording" ? `● recording ${seconds}s` : status === "idle" ? "no sample" : `sample · ${seconds}s`}
+            {status === "recording"
+              ? `● recording / enregistrement ${seconds}s`
+              : status === "idle"
+                ? "no sample · aucun échantillon"
+                : `sample / échantillon · ${seconds}s`}
           </span>
         </div>
 
@@ -160,7 +177,7 @@ function RecordPage() {
             disabled={status !== "recorded"}
             onClick={analyse}
           >
-            Analyse your speech
+            <BiInline en="Analyse your speech" fr="Analyser votre parole" />
           </Button>
           <Button
             onClick={togglePlay}
@@ -172,10 +189,12 @@ function RecordPage() {
             }
           >
             {playing ? <Square className="size-4" /> : <Play className="size-4" />}
-            Play enhanced speech
+            <BiInline en="Play enhanced speech" fr="Écouter la parole rehaussée" />
           </Button>
           {status === "queued" || status === "processing" ? (
-            <span className="font-mono text-sm text-muted-foreground">processing on GPU…</span>
+            <span className="font-mono text-sm text-muted-foreground">
+              processing on GPU… · traitement sur GPU…
+            </span>
           ) : null}
         </div>
 
@@ -189,7 +208,7 @@ function RecordPage() {
       <div className="mt-8 border-t border-border pt-6">
         <Button variant="outline" onClick={deleteRecording} disabled={status === "idle"}>
           <Trash2 className="size-4" />
-          Delete my recording
+          <BiInline en="Delete my recording" fr="Supprimer mon enregistrement" />
         </Button>
       </div>
     </PageShell>
