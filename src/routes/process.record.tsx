@@ -149,24 +149,22 @@ function RecordPage() {
         <div className="flex flex-wrap items-center gap-4">
           {status === "recording" ? (
             <Button
-              size="icon"
               variant="destructive"
               onClick={stopRecording}
-              className="h-24 w-24 flex-col rounded-full"
+              className="h-28 w-28 flex-col items-center justify-center gap-1 rounded-full text-base"
             >
-              <Square className="size-6" />
-              <span className="text-[0.65rem] leading-tight">
+              <Square className="size-7" />
+              <span className="text-center text-sm leading-tight">
                 <BiInline en="Stop" fr="Arrêter" />
               </span>
             </Button>
           ) : (
             <Button
-              size="icon"
               onClick={startRecording}
-              className="h-24 w-24 flex-col rounded-full"
+              className="h-28 w-28 flex-col items-center justify-center gap-1 rounded-full text-base"
             >
-              <Mic className="size-8" />
-              <span className="text-[0.65rem] leading-tight">
+              <Mic className="size-9" />
+              <span className="text-center text-sm leading-tight">
                 {status === "idle" ? (
                   <BiInline en="Record" fr="Enregistrer" />
                 ) : (
