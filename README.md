@@ -1,6 +1,7 @@
 # Listening-Neurological-Health
 
 LISTENING TO NEUROLOGICAL HEALTH
+
 Speech Analysis with Signal Processing and Machine Learning
 
 An interactive scientific open-house demonstrator illustrating how speech can be processed using digital signal processing, acoustic feature extraction, and machine learning.
@@ -12,14 +13,14 @@ LISTENING TO NEUROLOGICAL HEALTH is an interactive web-based demonstration desig
 The demonstrator introduces visitors to two related concepts:
 
 **Speech enhancement and noise reduction**
+
 How can signal-processing methods improve speech recorded in noisy environments?
 
 **Speech analysis and machine learning**
+
 How can measurable characteristics of speech be transformed into features and subsequently used by a machine-learning model to investigate patterns associated with neurological health?
 
-The application deliberately separates these two activities.
-
-Visitors may experiment with noise reduction using their own voice, but their personal recording is never analysed for neurological conditions. The neurological-health demonstration instead uses pre-recorded research speech.
+The application deliberately separates these two activities. The demo shows pre-processed audio with speech enhancement. Visitors may experiment with noise reduction using their own voice, but their personal recording is never analysed for neurological conditions. The neurological-health demonstration instead uses pre-recorded research speech.
 
 The objective is educational and scientific communication rather than clinical assessment.
 
@@ -28,19 +29,19 @@ The objective is educational and scientific communication rather than clinical a
 
 The application consists of a home page and two interactive project paths.
 
-                         HOME
-                          │
-             ┌────────────┴────────────┐
-             │                         │
-             ▼                         ▼
-     PROCESS SPEECH             ANALYSE SPEECH
-     Noise reduction             Machine learning
-             │                         │
-             ▼                         ▼
-       Own voice                 LISTEN → ANALYSE
-             │                         │
-             ▼                         ▼
-       GPU / SLURM                PREDICT → WHY
+                               HOME
+                                │
+                   ┌────────────┴────────────┐
+                   │                         │
+                   ▼                         ▼
+           PROCESS SPEECH             ANALYSE SPEECH
+           Noise reduction             Machine learning
+            │            │                         │
+            ▼            ▼                         ▼
+         Explore     Own voice              LISTEN → ANALYSE
+                         │                         │
+                         ▼                         ▼
+                    GPU / SLURM              PREDICT → WHY
 
 This project was built with [Lovable](https://lovable.dev).
 
