@@ -5,7 +5,7 @@ Speech Analysis with Signal Processing and Machine Learning
 
 An interactive scientific open-house demonstrator illustrating how speech can be processed using digital signal processing, acoustic feature extraction, and machine learning.
 
-1. Overview
+## Overview
 
 LISTENING TO NEUROLOGICAL HEALTH is an interactive web-based demonstration designed for a general public audience at a scientific open house.
 
@@ -24,23 +24,7 @@ Visitors may experiment with noise reduction using their own voice, but their pe
 The objective is educational and scientific communication rather than clinical assessment.
 
 
-The demonstrator provides an intuitive introduction to this research pipeline:
-
-Speech
-   ↓
-Signal processing
-   ↓
-Speech-feature extraction
-   ↓
-Machine-learning model
-   ↓
-Prediction
-   ↓
-Feature-based explanation
-
-The application is intended to make this process understandable without requiring visitors to have a background in signal processing, machine learning, or neuroscience.
-
-3. Demonstration Structure
+## Demonstration Structure
 
 The application consists of a home page and two interactive project paths.
 
@@ -75,6 +59,6 @@ Prefer working locally? You need Node.js and npm — [install with nvm](https://
 ```sh
 git clone <this-repository-url>
 cd <repository-name>
-npm i
+npm install
 npm run dev
 ```
