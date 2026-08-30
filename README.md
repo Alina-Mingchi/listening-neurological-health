@@ -1,106 +1,62 @@
 # Listening-Neurological-Health
 
-I would like to build a demo with react, I would have a home page, two project page that could be jumped when selecting from the home page, from each project page, I need a back to home button. The theme should be blue, and academic.
+LISTENING TO NEUROLOGICAL HEALTH
+Speech Analysis with Signal Processing and Machine Learning
 
-Home 
+An interactive scientific open-house demonstrator illustrating how speech can be processed using digital signal processing, acoustic feature extraction, and machine learning.
 
-The title is “LISTENING TO NEUROLOGICAL HEALTH”
+1. Overview
 
-subtitle: Speech Analysis with Signal Processing and Machine Learning
+LISTENING TO NEUROLOGICAL HEALTH is an interactive web-based demonstration designed for a general public audience at a scientific open house.
 
-introduction sentence: Speech is a rich signal. What can we learn from it?
+The demonstrator introduces visitors to two related concepts:
 
-Button 1 Process Speech - Noise Reduction
+**Speech enhancement and noise reduction**
+How can signal-processing methods improve speech recorded in noisy environments?
 
-Button 2 Analyse speech - Neurological health
+**Speech analysis and machine learning**
+How can measurable characteristics of speech be transformed into features and subsequently used by a machine-learning model to investigate patterns associated with neurological health?
 
-Process speech
+The application deliberately separates these two activities.
 
-Title: Process speech
+Visitors may experiment with noise reduction using their own voice, but their personal recording is never analysed for neurological conditions. The neurological-health demonstration instead uses pre-recorded research speech.
 
-Introduction sentence: Choose an environment {BUS, CAF, STR, PED}
-
-(Once they picked, load from local files from a folder)
-
-on the page, show 
-
-“Clean” waveform on top of spectrogram, with a button >Listen
-
-“Noisy” waveform on top of spectrogram, with a button >Listen
-
-“Enhanced” waveform on top of spectrogram, with a button >Listen
+The objective is educational and scientific communication rather than clinical assessment.
 
 
-A sentence noise reduction: +7.2 dB (depends on the audio file chosen, this number will be read from a .csv)
+The demonstrator provides an intuitive introduction to this research pipeline:
 
-bottom of the page should have try another, and Next two buttons
+Speech
+   ↓
+Signal processing
+   ↓
+Speech-feature extraction
+   ↓
+Machine-learning model
+   ↓
+Prediction
+   ↓
+Feature-based explanation
 
+The application is intended to make this process understandable without requiring visitors to have a background in signal processing, machine learning, or neuroscience.
 
+3. Demonstration Structure
 
+The application consists of a home page and two interactive project paths.
 
-When Next is clicked, it will be a page title “Want to try it with your own voice?”
-
-There will be a message highlighted your recording will only be used to demonstrate noise reduction, your voice will NOT be analysed for neurological conditions.  There will be a record button, then there will be analyse your speech button, which will trigger processing the file on a gpu on SLURM. Once the processing is ready, the button “Play enhanced speech” should be green, and could play the speech. Bottom should has a button “Delete my recording”, once it is clicked, delete the recording, and show a popup message on the screen “Recording has been deleted"
-
-Analyse speech
-
-Title: Analyse speech
-
-Subtitle: Speech analysis & Machine Learning
-
-Introduction sentence: How can subtle charactereistics of speech provide information about neurological health?
-
-show a pipeline: speech -> extract speech features -> machine learning -> prediction -> explanation
-
-Highlight a sentence “Uses pre-recorded research speech only”
-
-Bottom of the page has button “start”
-
-“LISTEN”
-
-Title: LISTEN
-
-“Can you hear subtle differences?” Play button for speaker A, Play button for speaker B
-
-“Which sounds more typical of healthy speech?” [A] [B] [Not sure] 
-
-[Reveal]
-
-[Next->]
-
-“ANALYSE”
-
-Title: ANALYSE
-
-“What does the computer measure?”
-
-left column: show waveform on top of spectrogram 
-
-right column:  a table of  Speech features  pitch, pitch variation, loudness, f1, f2, f3, speech rate,…
-
-[Next ->]
-
-“PREDICT”
-
-Title: PREDICT
-
-show pipeline: Speech features -> ML Model -> Healthy …27% Pathological … 73%
-
-Highlight: Model prediction only for research development purpose, NOT a medical diagnosis.
-
-[Why this prediction?]
-
-“WHY”
-
-Title: Why did the model prediction this?
-
-“Feature contribution”
-
-(read feature values/ shap from .csv) or directly from a saved shap analysis screenshot
-
-“Click a feature to learn more” - this will show a popup window of the definition of the feature
-
-[Finish]
+                         HOME
+                          │
+             ┌────────────┴────────────┐
+             │                         │
+             ▼                         ▼
+     PROCESS SPEECH             ANALYSE SPEECH
+     Noise reduction             Machine learning
+             │                         │
+             ▼                         ▼
+       Own voice                 LISTEN → ANALYSE
+             │                         │
+             ▼                         ▼
+       GPU / SLURM                PREDICT → WHY
 
 This project was built with [Lovable](https://lovable.dev).
 
