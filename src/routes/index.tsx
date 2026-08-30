@@ -96,6 +96,10 @@ function Home() {
           diagnostic.
         </p>
       </main>
+
+      <footer className="border-t border-border bg-card/80 py-6 text-center text-sm text-muted-foreground">
+        <p>© 2026 Signal Processing for Communication (SPC) Group | Idiap Research Institute</p>
+      </footer>
     </div>
   );
 }
