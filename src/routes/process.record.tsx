@@ -117,7 +117,7 @@ function RecordPage() {
     if (urlRef.current) URL.revokeObjectURL(urlRef.current);
     urlRef.current = null;
     chunks.current = [];
-    setPlaying(false);
+    setPlaying(null);
     setSeconds(0);
     setJobLog([]);
     setStatus("idle");
@@ -192,7 +192,15 @@ function RecordPage() {
             <BiInline en="Analyse your speech" fr="Analyser votre parole" />
           </Button>
           <Button
-            onClick={togglePlay}
+            variant="outline"
+            onClick={() => togglePlay("raw")}
+            disabled={status === "idle" || status === "recording"}
+          >
+            {playing === "raw" ? <Square className="size-4" /> : <Play className="size-4" />}
+            <BiInline en="Play recorded speech" fr="Écouter l’enregistrement" />
+          </Button>
+          <Button
+            onClick={() => togglePlay("enhanced")}
             disabled={status !== "ready"}
             className={
               status === "ready"
@@ -200,7 +208,7 @@ function RecordPage() {
                 : undefined
             }
           >
-            {playing ? <Square className="size-4" /> : <Play className="size-4" />}
+            {playing === "enhanced" ? <Square className="size-4" /> : <Play className="size-4" />}
             <BiInline en="Play enhanced speech" fr="Écouter la parole rehaussée" />
           </Button>
           {status === "queued" || status === "processing" ? (
