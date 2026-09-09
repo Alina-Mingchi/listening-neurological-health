@@ -156,6 +156,10 @@
 }
 
 @layer base {
+  html {
+    font-size: 1.125rem;
+  }
+
   * {
     border-color: var(--color-border);
   }
@@ -165,6 +169,7 @@
     color: var(--color-foreground);
   }
 }
+
 
 @layer base {
   body {
