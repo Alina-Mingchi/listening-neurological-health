@@ -70,9 +70,9 @@ export function PageShell({
             {subtitleFr}
           </p>
         ) : null}
-        {intro ? <p className="mt-4 max-w-2xl text-base text-muted-foreground">{intro}</p> : null}
+        {intro ? <p className="mt-4 max-w-4xl text-base text-muted-foreground">{intro}</p> : null}
         {introFr ? (
-          <p lang="fr" className="max-w-2xl text-base italic text-muted-foreground/80">
+          <p lang="fr" className="max-w-4xl text-base italic text-muted-foreground/80">
             {introFr}
           </p>
         ) : null}

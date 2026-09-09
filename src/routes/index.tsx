@@ -35,7 +35,7 @@ function Home() {
           <p lang="fr" className="font-mono text-[0.7rem] uppercase tracking-[0.28em] text-primary-foreground/50">
             Parole · Traitement du signal · Apprentissage automatique
           </p>
-          <h1 className="mt-5 max-w-3xl font-display text-4xl leading-tight font-semibold text-primary-foreground sm:text-6xl">
+          <h1 className="mt-5 max-w-4xl font-display text-4xl leading-tight font-semibold text-primary-foreground sm:text-6xl">
             Listening to Neurological Health
           </h1>
           <p
@@ -74,7 +74,7 @@ function Home() {
             kicker="Noise Reduction"
             kickerFr="Réduction du bruit"
             body="Hear how a speech enhancement front-end recovers a voice recorded in a bus, a cafeteria, a street or a pedestrian area."
-            bodyFr="Écoutez comment un module de rehaussement de la parole récupère une voix enregistrée dans un bus, une cafétéria, une rue ou une zone piétonne."
+            bodyFr="Écoutez comment un module de rehaussement de la parole amplifie une voix enregistrée dans un bus, une cafétéria, une rue ou une zone piétonne."
           />
           <DemoCard
             to="/analyse"
@@ -84,14 +84,14 @@ function Home() {
             kicker="Neurological Health"
             kickerFr="Santé neurologique"
             body="Follow the pipeline from acoustic features to a machine-learning prediction, and see which measurements drove the outcome."
-            bodyFr="Suivez le pipeline des paramètres acoustiques jusqu'à une prédiction par apprentissage automatique, et voyez quelles mesures ont déterminé le résultat."
+            bodyFr="Suivez le chemin, partant des paramètres acoustiques à une prédiction par apprentissage automatique, et voyez quelles mesures ont déterminé le résultat."
           />
         </div>
 
-        <p className="mt-12 max-w-2xl text-sm text-muted-foreground">
+        <p className="mt-12 max-w-3xl text-sm text-muted-foreground">
           This is a research demonstrator. Nothing shown here is a medical device or a diagnosis.
         </p>
-        <p lang="fr" className="max-w-2xl text-sm italic text-muted-foreground/80">
+        <p lang="fr" className="max-w-3xl text-sm italic text-muted-foreground/80">
           Ceci est un démonstrateur de recherche. Rien de ce qui est présenté ici n'est un dispositif médical ni un
           diagnostic.
         </p>

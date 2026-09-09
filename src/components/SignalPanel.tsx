@@ -130,7 +130,7 @@ export function SignalPanel({ seed, variant, label, labelFr, caption, captionFr,
       <div className="flex justify-between border-t border-border px-4 py-1.5 font-mono text-[0.65rem] text-muted-foreground">
         <span>0.0 s</span>
         <span>
-          waveform · spectrogram (0–8 kHz) / <span lang="fr">forme d'onde · spectrogramme</span>
+          waveform · spectrogram (0–8 kHz) / <span lang="fr">onde sonore · spectrogramme</span>
         </span>
         <span>2.4 s</span>
       </div>

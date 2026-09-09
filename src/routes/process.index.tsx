@@ -46,8 +46,8 @@ function ProcessPage() {
       eyebrow={<BiInline en="Demonstration 01" fr="Démonstration 01" />}
       title="Process speech"
       titleFr="Traiter la parole"
-      intro="Choose an environment. Recordings are loaded from the local sample set."
-      introFr="Choisissez un environnement. Les enregistrements proviennent du jeu d'échantillons local."
+      intro="Choose an environment."
+      introFr="Choisissez un environnement. "
       steps={[
         { label: "Enhance", labelFr: "Rehausser", active: true },
         { label: "Your voice", labelFr: "Votre voix", active: false },
@@ -102,7 +102,7 @@ function ProcessPage() {
               variant="enhanced"
               label="Enhanced"
               labelFr="Rehaussé"
-              caption="After the noise-reduction front-end"
+              caption="After the noise-reduction"
               captionFr="Après le module de réduction du bruit"
             />
           </div>
