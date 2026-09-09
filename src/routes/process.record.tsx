@@ -33,7 +33,7 @@ function RecordPage() {
   const [status, setStatus] = useState<Status>("idle");
   const [seconds, setSeconds] = useState(0);
   const [jobLog, setJobLog] = useState<string[]>([]);
-  const [playing, setPlaying] = useState(false);
+  const [playing, setPlaying] = useState<null | "raw" | "enhanced">(null);
   const recorder = useRef<MediaRecorder | null>(null);
   const chunks = useRef<Blob[]>([]);
   const urlRef = useRef<string | null>(null);
@@ -95,19 +95,20 @@ function RecordPage() {
     });
   };
 
-  const togglePlay = () => {
+  const togglePlay = (kind: "raw" | "enhanced") => {
     if (!urlRef.current) return;
     if (playing) {
       audioRef.current?.pause();
-      setPlaying(false);
-      return;
+      setPlaying(null);
+      if (playing === kind) return;
     }
     const el = audioRef.current ?? new Audio(urlRef.current);
     el.src = urlRef.current;
+    el.currentTime = 0;
     audioRef.current = el;
-    el.onended = () => setPlaying(false);
+    el.onended = () => setPlaying(null);
     void el.play();
-    setPlaying(true);
+    setPlaying(kind);
   };
 
   const deleteRecording = () => {
