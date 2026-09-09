@@ -33,7 +33,7 @@ function RecordPage() {
   const [status, setStatus] = useState<Status>("idle");
   const [seconds, setSeconds] = useState(0);
   const [jobLog, setJobLog] = useState<string[]>([]);
-  const [playing, setPlaying] = useState(false);
+  const [playing, setPlaying] = useState<null | "raw" | "enhanced">(null);
   const recorder = useRef<MediaRecorder | null>(null);
   const chunks = useRef<Blob[]>([]);
   const urlRef = useRef<string | null>(null);
@@ -95,19 +95,20 @@ function RecordPage() {
     });
   };
 
-  const togglePlay = () => {
+  const togglePlay = (kind: "raw" | "enhanced") => {
     if (!urlRef.current) return;
     if (playing) {
       audioRef.current?.pause();
-      setPlaying(false);
-      return;
+      setPlaying(null);
+      if (playing === kind) return;
     }
     const el = audioRef.current ?? new Audio(urlRef.current);
     el.src = urlRef.current;
+    el.currentTime = 0;
     audioRef.current = el;
-    el.onended = () => setPlaying(false);
+    el.onended = () => setPlaying(null);
     void el.play();
-    setPlaying(true);
+    setPlaying(kind);
   };
 
   const deleteRecording = () => {
@@ -116,7 +117,7 @@ function RecordPage() {
     if (urlRef.current) URL.revokeObjectURL(urlRef.current);
     urlRef.current = null;
     chunks.current = [];
-    setPlaying(false);
+    setPlaying(null);
     setSeconds(0);
     setJobLog([]);
     setStatus("idle");
@@ -191,7 +192,15 @@ function RecordPage() {
             <BiInline en="Analyse your speech" fr="Analyser votre parole" />
           </Button>
           <Button
-            onClick={togglePlay}
+            variant="outline"
+            onClick={() => togglePlay("raw")}
+            disabled={status === "idle" || status === "recording"}
+          >
+            {playing === "raw" ? <Square className="size-4" /> : <Play className="size-4" />}
+            <BiInline en="Play recorded speech" fr="Écouter l’enregistrement" />
+          </Button>
+          <Button
+            onClick={() => togglePlay("enhanced")}
             disabled={status !== "ready"}
             className={
               status === "ready"
@@ -199,7 +208,7 @@ function RecordPage() {
                 : undefined
             }
           >
-            {playing ? <Square className="size-4" /> : <Play className="size-4" />}
+            {playing === "enhanced" ? <Square className="size-4" /> : <Play className="size-4" />}
             <BiInline en="Play enhanced speech" fr="Écouter la parole rehaussée" />
           </Button>
           {status === "queued" || status === "processing" ? (
