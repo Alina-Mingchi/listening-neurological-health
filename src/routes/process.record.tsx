@@ -186,18 +186,18 @@ function RecordPage() {
         <div className="mt-6 flex flex-wrap items-center gap-4 border-t border-border pt-6">
           <Button
             variant="outline"
-            disabled={status !== "recorded"}
-            onClick={analyse}
-          >
-            <BiInline en="Analyse your speech" fr="Analyser votre parole" />
-          </Button>
-          <Button
-            variant="outline"
             onClick={() => togglePlay("raw")}
             disabled={status === "idle" || status === "recording"}
           >
             {playing === "raw" ? <Square className="size-4" /> : <Play className="size-4" />}
             <BiInline en="Play recorded speech" fr="Écouter l’enregistrement" />
+          </Button>
+          <Button
+            variant="outline"
+            disabled={status !== "recorded"}
+            onClick={analyse}
+          >
+            <BiInline en="Analyse your speech" fr="Analyser votre parole" />
           </Button>
           <Button
             onClick={() => togglePlay("enhanced")}
