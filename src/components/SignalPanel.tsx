@@ -14,7 +14,7 @@ interface Props {
   captionFr?: string;
   compact?: boolean;
   /** Optional path to a real audio file, e.g. "/audio/bus_clean.wav". */
-  src?: string;
+  src?: string | undefined;
 }
 
 function cssVar(name: string, fallback: string) {
