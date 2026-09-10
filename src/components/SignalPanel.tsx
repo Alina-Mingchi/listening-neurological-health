@@ -3,6 +3,7 @@ import { Play, Square } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BiInline } from "@/components/Bilingual";
 import { makeSpectrogram, makeWaveform, playSignal, stopPlayback, type Variant } from "@/lib/audio";
+import { analyseFile, playFile, stopFilePlayback, type AudioAnalysis } from "@/lib/realAudio";
 
 interface Props {
   seed: string;
@@ -12,6 +13,13 @@ interface Props {
   caption?: string;
   captionFr?: string;
   compact?: boolean;
+  /** Optional path to a real audio file, e.g. "/audio/bus_clean.wav". */
+  src?: string | undefined;
+}
+
+function cssVar(name: string, fallback: string) {
+  if (typeof window === "undefined") return fallback;
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
 }
 
 function useCanvas(draw: (ctx: CanvasRenderingContext2D, w: number, h: number) => void, deps: unknown[]) {
@@ -32,17 +40,34 @@ function useCanvas(draw: (ctx: CanvasRenderingContext2D, w: number, h: number) =
   return ref;
 }
 
-function cssVar(name: string, fallback: string) {
-  if (typeof window === "undefined") return fallback;
-  return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
-}
-
-export function SignalPanel({ seed, variant, label, labelFr, caption, captionFr, compact }: Props) {
+export function SignalPanel({ seed, variant, label, labelFr, caption, captionFr, compact, src }: Props) {
   const [playing, setPlaying] = useState(false);
+  const [real, setReal] = useState<AudioAnalysis | null>(null);
+  const [fileMissing, setFileMissing] = useState(false);
+
+  // Load and analyse the real recording when one is provided.
+  useEffect(() => {
+    let cancelled = false;
+    setReal(null);
+    setFileMissing(false);
+    if (!src) return;
+    analyseFile(src)
+      .then((a) => {
+        if (!cancelled) setReal(a);
+      })
+      .catch(() => {
+        if (!cancelled) setFileMissing(true);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [src]);
+
+  const useReal = Boolean(src && real);
 
   const waveRef = useCanvas(
     (ctx, w, h) => {
-      const data = makeWaveform({ seed, variant });
+      const data = useReal ? (real as AudioAnalysis).waveform : makeWaveform({ seed, variant });
       ctx.clearRect(0, 0, w, h);
       ctx.strokeStyle = cssVar("--border", "#dbe2ec");
       ctx.beginPath();
@@ -59,12 +84,12 @@ export function SignalPanel({ seed, variant, label, labelFr, caption, captionFr,
       }
       ctx.stroke();
     },
-    [seed, variant],
+    [seed, variant, useReal, real],
   );
 
   const specRef = useCanvas(
     (ctx, w, h) => {
-      const m = makeSpectrogram({ seed, variant });
+      const m = useReal ? (real as AudioAnalysis).spectrogram : makeSpectrogram({ seed, variant });
       const cols = m.length;
       const rows = m[0]?.length ?? 1;
       const cw = w / cols;
@@ -80,20 +105,34 @@ export function SignalPanel({ seed, variant, label, labelFr, caption, captionFr,
         }
       }
     },
-    [seed, variant],
+    [seed, variant, useReal, real],
   );
 
-  useEffect(() => () => stopPlayback(), []);
+  useEffect(
+    () => () => {
+      stopPlayback();
+      stopFilePlayback();
+    },
+    [],
+  );
 
   const toggle = () => {
     if (playing) {
       stopPlayback();
+      stopFilePlayback();
       setPlaying(false);
       return;
     }
     setPlaying(true);
-    playSignal(seed, variant, () => setPlaying(false));
+    if (src && !fileMissing) {
+      stopPlayback();
+      playFile(src, () => setPlaying(false));
+    } else {
+      playSignal(seed, variant, () => setPlaying(false));
+    }
   };
+
+  const duration = useReal ? (real as AudioAnalysis).duration : 2.4;
 
   return (
     <figure className="paper overflow-hidden">
@@ -114,11 +153,7 @@ export function SignalPanel({ seed, variant, label, labelFr, caption, captionFr,
         </div>
         <Button size="sm" variant={playing ? "secondary" : "outline"} onClick={toggle}>
           {playing ? <Square className="size-3.5" /> : <Play className="size-3.5" />}
-          {playing ? (
-            <BiInline en="Stop" fr="Arrêter" />
-          ) : (
-            <BiInline en="Listen" fr="Écouter" />
-          )}
+          {playing ? <BiInline en="Stop" fr="Arrêter" /> : <BiInline en="Listen" fr="Écouter" />}
         </Button>
       </figcaption>
       <div className="bg-card px-2 pt-2">
@@ -132,7 +167,7 @@ export function SignalPanel({ seed, variant, label, labelFr, caption, captionFr,
         <span>
           waveform · spectrogram (0–8 kHz) / <span lang="fr">onde sonore · spectrogramme</span>
         </span>
-        <span>2.4 s</span>
+        <span>{duration.toFixed(1)} s</span>
       </div>
     </figure>
   );

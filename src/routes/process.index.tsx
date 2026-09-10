@@ -83,6 +83,7 @@ function ProcessPage() {
           <div className="grid gap-6">
             <SignalPanel
               seed={env}
+              src={row?.["clean_file"]}
               variant="clean"
               label="Clean"
               labelFr="Propre"
@@ -91,6 +92,7 @@ function ProcessPage() {
             />
             <SignalPanel
               seed={env}
+              src={row?.["noisy_file"]}
               variant="noisy"
               label="Noisy"
               labelFr="Bruité"
@@ -99,12 +101,14 @@ function ProcessPage() {
             />
             <SignalPanel
               seed={env}
+              src={row?.["enhanced_file"]}
               variant="enhanced"
               label="Enhanced"
               labelFr="Rehaussé"
               caption="After the noise-reduction"
               captionFr="Après le module de réduction du bruit"
             />
+
           </div>
 
           <Notice>
