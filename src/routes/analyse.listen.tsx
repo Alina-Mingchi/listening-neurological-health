@@ -57,6 +57,7 @@ function ListenPage() {
       <div className="grid gap-6 md:grid-cols-2">
         <SignalPanel
           seed="speakerA"
+          src="/audio/hc.wav"
           variant="clean"
           label="Speaker A"
           labelFr="Locuteur A"
@@ -66,6 +67,7 @@ function ListenPage() {
         />
         <SignalPanel
           seed="speakerB"
+          src="/audio/pd.wav"
           variant="enhanced"
           label="Speaker B"
           labelFr="Locuteur B"
