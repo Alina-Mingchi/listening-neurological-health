@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { PageShell, Notice } from "@/components/PageShell";
 import { Mic, Play, Square, Trash2 } from "@/components/icons";
 import { BiInline } from "@/components/Bilingual";
+import { deleteJob, enhancedUrl, getJob, submitJob } from "@/lib/enhanceApi";
 
 export const Route = createFileRoute("/process/record")({
   head: () => ({
@@ -37,12 +38,17 @@ function RecordPage() {
   const recorder = useRef<MediaRecorder | null>(null);
   const chunks = useRef<Blob[]>([]);
   const urlRef = useRef<string | null>(null);
+  const blobRef = useRef<Blob | null>(null);
+  const enhancedRef = useRef<string | null>(null);
+  const jobIdRef = useRef<string | null>(null);
+  const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const timer = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
     return () => {
       if (timer.current) clearInterval(timer.current);
+      if (pollRef.current) clearInterval(pollRef.current);
       if (urlRef.current) URL.revokeObjectURL(urlRef.current);
     };
   }, []);
@@ -57,6 +63,7 @@ function RecordPage() {
         stream.getTracks().forEach((t) => t.stop());
         const blob = new Blob(chunks.current, { type: mr.mimeType || "audio/webm" });
         if (urlRef.current) URL.revokeObjectURL(urlRef.current);
+        blobRef.current = blob;
         urlRef.current = URL.createObjectURL(blob);
         setStatus("recorded");
       };
@@ -78,14 +85,13 @@ function RecordPage() {
     recorder.current?.stop();
   };
 
-  const analyse = () => {
-    setStatus("queued");
-    setJobLog(["Uploading sample to the compute cluster…"]);
+  // Fallback when the SLURM bridge is not reachable: keep the demo usable.
+  const simulate = () => {
     const steps: [number, string, Status][] = [
-      [900, "sbatch submitted · job 481207 · partition gpu · queued", "queued"],
-      [2000, "Job 481207 running on node gpu-04 (NVIDIA A100)", "processing"],
-      [3400, "Speech enhancement model inference complete", "processing"],
-      [4300, "Enhanced audio written · job 481207 COMPLETED", "ready"],
+      [600, "bridge unavailable · running simulated job for the demo", "queued"],
+      [1600, "sbatch submitted · job 481207 · partition gpu · queued", "queued"],
+      [2600, "Job 481207 running on node gpu-04 (NVIDIA A100)", "processing"],
+      [4000, "Enhanced audio written · job 481207 COMPLETED", "ready"],
     ];
     steps.forEach(([delay, line, next]) => {
       setTimeout(() => {
@@ -95,15 +101,56 @@ function RecordPage() {
     });
   };
 
+  const startPolling = (id: string) => {
+    if (pollRef.current) clearInterval(pollRef.current);
+    pollRef.current = setInterval(async () => {
+      try {
+        const s = await getJob(id);
+        setJobLog(s.log ?? []);
+        if (s.state === "running") setStatus("processing");
+        if (s.state === "completed") {
+          if (pollRef.current) clearInterval(pollRef.current);
+          enhancedRef.current = enhancedUrl(s);
+          setStatus("ready");
+        }
+        if (s.state === "failed") {
+          if (pollRef.current) clearInterval(pollRef.current);
+          setStatus("recorded");
+          toast.error("Cluster job failed · Échec du calcul", { description: s.error ?? "" });
+        }
+      } catch {
+        if (pollRef.current) clearInterval(pollRef.current);
+        setStatus("recorded");
+        toast.error("Lost contact with the compute bridge · Connexion au serveur perdue");
+      }
+    }, 3000);
+  };
+
+  const analyse = async () => {
+    if (!blobRef.current) return;
+    setStatus("queued");
+    setJobLog(["Uploading sample to the compute cluster…"]);
+    try {
+      const job = await submitJob(blobRef.current, "recording.webm");
+      jobIdRef.current = job.id;
+      setJobLog(job.log ?? []);
+      if (job.state === "failed") throw new Error(job.error ?? "submission failed");
+      startPolling(job.id);
+    } catch {
+      simulate();
+    }
+  };
+
   const togglePlay = (kind: "raw" | "enhanced") => {
-    if (!urlRef.current) return;
+    const src = kind === "enhanced" ? (enhancedRef.current ?? urlRef.current) : urlRef.current;
+    if (!src) return;
     if (playing) {
       audioRef.current?.pause();
       setPlaying(null);
       if (playing === kind) return;
     }
-    const el = audioRef.current ?? new Audio(urlRef.current);
-    el.src = urlRef.current;
+    const el = audioRef.current ?? new Audio(src);
+    el.src = src;
     el.currentTime = 0;
     audioRef.current = el;
     el.onended = () => setPlaying(null);
@@ -114,6 +161,11 @@ function RecordPage() {
   const deleteRecording = () => {
     audioRef.current?.pause();
     audioRef.current = null;
+    if (pollRef.current) clearInterval(pollRef.current);
+    if (jobIdRef.current) void deleteJob(jobIdRef.current);
+    jobIdRef.current = null;
+    enhancedRef.current = null;
+    blobRef.current = null;
     if (urlRef.current) URL.revokeObjectURL(urlRef.current);
     urlRef.current = null;
     chunks.current = [];
