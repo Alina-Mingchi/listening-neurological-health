@@ -1,5 +1,5 @@
 environment,label,label_fr,snr_gain_db,input_snr_db,file,clean_file,noisy_file,enhanced_file
 BUS,Bus interior,Intérieur de bus,12.1,6.9,bus_sample_01.wav,/audio/bus_clean.wav,/audio/bus_noisy.wav,/audio/bus_enhanced.wav
-CAFE,Cafeteria,Cafétéria,18.9,-5,9,caf_sample_01.wav,/audio/caf_clean.wav,/audio/caf_noisy.wav,/audio/caf_enhanced.wav
+CAFE,Cafeteria,Cafétéria,18.9,-5.9,caf_sample_01.wav,/audio/caf_clean.wav,/audio/caf_noisy.wav,/audio/caf_enhanced.wav
 STREET,Street,Rue,6.8,8.6,str_sample_01.wav,/audio/str_clean.wav,/audio/str_noisy.wav,/audio/str_enhanced.wav
 PEDESTRIAN,Pedestrian area,Zone piétonne,10.8,3.2,ped_sample_01.wav,/audio/ped_clean.wav,/audio/ped_noisy.wav,/audio/ped_enhanced.wav
