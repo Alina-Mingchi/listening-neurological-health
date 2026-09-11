@@ -1,3 +1,4 @@
+feature,feature_fr,value,unit,shap,definition,definition_fr
 Mean pitch (F0),Hauteur moyenne (F0),31.01562,semitones,0.00409,Average fundamental frequency represented in semitones relative to 27.5 Hz.,Fréquence fondamentale moyenne exprimée en demi-tons par rapport à 27,5 Hz.
 Pitch variation (F0 SD),Variation de hauteur (écart-type F0),0.16380809,semitones,0.00448,Standard deviation of the fundamental frequency across the utterance. It describes pitch variability across the recording.,Écart-type de la fréquence fondamentale sur l'énoncé. Il décrit la variabilité de la hauteur sur l'enregistrement.
 Loudness (RMS intensity),Intensité sonore (RMS),0.21525176,normalized,0.17972,Average acoustic loudness across the utterance.,Intensité acoustique moyenne sur l'ensemble de l'énoncé.
