@@ -29,7 +29,7 @@ export const Route = createFileRoute("/process/")({
   component: ProcessPage,
 });
 
-const ENVS = ["BUS", "CAF", "STR", "PED"] as const;
+const ENVS = ["BUS", "CAFE", "STREET", "PEDESTRIAN"] as const;
 
 function ProcessPage() {
   const [env, setEnv] = useState<string | null>(null);
@@ -68,9 +68,9 @@ function ProcessPage() {
 
       {!env ? (
         <div className="mt-8 text-sm text-muted-foreground">
-          <p>BUS — bus interior · CAF — cafeteria · STR — street · PED — pedestrian area</p>
+          <p>BUS — bus interior · CAFE — cafeteria · STREET — street · PEDESTRIAN — pedestrian area</p>
           <p lang="fr" className="italic text-muted-foreground/80">
-            BUS — intérieur de bus · CAF — cafétéria · STR — rue · PED — zone piétonne
+            BUS — intérieur de bus · CAFE — cafétéria · STREET — rue · PEDESTRIAN — zone piétonne
           </p>
         </div>
       ) : (
