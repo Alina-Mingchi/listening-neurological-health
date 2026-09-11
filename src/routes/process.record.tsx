@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { PageShell, Notice } from "@/components/PageShell";
 import { Mic, Play, Square, Trash2 } from "@/components/icons";
 import { BiInline } from "@/components/Bilingual";
+import { deleteJob, enhancedUrl, getJob, submitJob } from "@/lib/enhanceApi";
 
 export const Route = createFileRoute("/process/record")({
   head: () => ({
@@ -37,12 +38,17 @@ function RecordPage() {
   const recorder = useRef<MediaRecorder | null>(null);
   const chunks = useRef<Blob[]>([]);
   const urlRef = useRef<string | null>(null);
+  const blobRef = useRef<Blob | null>(null);
+  const enhancedRef = useRef<string | null>(null);
+  const jobIdRef = useRef<string | null>(null);
+  const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const timer = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
     return () => {
       if (timer.current) clearInterval(timer.current);
+      if (pollRef.current) clearInterval(pollRef.current);
       if (urlRef.current) URL.revokeObjectURL(urlRef.current);
     };
   }, []);
