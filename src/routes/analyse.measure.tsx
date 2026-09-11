@@ -52,6 +52,7 @@ function MeasurePage() {
       <div className="grid gap-6 lg:grid-cols-2">
         <SignalPanel
           seed="speakerB"
+          src="/audio/pd.wav"
           variant="clean"
           label="Speaker B"
           labelFr="Locuteur B"
