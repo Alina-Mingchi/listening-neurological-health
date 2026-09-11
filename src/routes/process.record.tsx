@@ -63,6 +63,7 @@ function RecordPage() {
         stream.getTracks().forEach((t) => t.stop());
         const blob = new Blob(chunks.current, { type: mr.mimeType || "audio/webm" });
         if (urlRef.current) URL.revokeObjectURL(urlRef.current);
+        blobRef.current = blob;
         urlRef.current = URL.createObjectURL(blob);
         setStatus("recorded");
       };
