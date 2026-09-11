@@ -15,10 +15,13 @@
 set -e
 JOB_ID=$1
 WORK=/idiap/temp/mhou/code/webdemo/$JOB_ID
-MODEL=${wsj0_model_pred:-/idiap/temp/mhou/code/models/wsj0_nemo_se.nemo}
+MODEL=/idiap/temp/mhou/code/NeMo/nemo_experiments/schroedinger_bridge/2025-01-30_12-08-40/checkpoints/schroedinger_bridge.nemo
+
 
 # --- environment (same as your usual shell.sh) -------------------------------
-source /idiap/temp/mhou/miniconda3/etc/profile.d/conda.sh
+# source /idiap/temp/mhou/miniconda3/etc/profile.d/conda.sh
+# conda activate nemo
+eval "$(/idiap/temp/mhou/miniconda3/bin/conda shell.bash hook)"
 conda activate nemo
 
 # --- 1. convert the browser recording to 16 kHz mono wav ---------------------
@@ -31,12 +34,12 @@ import json, sys, wave
 w = sys.argv[1]
 with wave.open(f"{w}/input.wav") as f:
     dur = f.getnframes() / f.getframerate()
-json.dump({"audio_filepath": f"{w}/input.wav", "duration": dur},
+json.dump({"noisy_filepath": f"{w}/input.wav", "duration": dur},
           open(f"{w}/manifest.json", "w")); print(file=open(f"{w}/manifest.json","a"))
 PY
 
 # --- 3. enhancement ----------------------------------------------------------
-python /idiap/temp/mhou/code/NeMo/examples/audio/audio_to_audio_eval.py \
+python /idiap/temp/mhou/code/NeMo/examples/audio/audio_to_audio_eval_simple.py \
   model_path="$MODEL" \
   dataset_manifest="$WORK/manifest.json" \
   output_dir="$WORK/out" \
